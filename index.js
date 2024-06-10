@@ -10,8 +10,8 @@ const startBtn = document.getElementById("start");
 console.log(startBtn);
 const cards = document.querySelectorAll(".card");
 console.log(cards);
-const time = document.getElementById("time");
-console.log(time);
+const timeEl = document.getElementById("time");
+console.log(timeEl);
 const modal = document.getElementById("modal");
 console.log(modal);
 const board = document.getElementById("board");
@@ -22,7 +22,7 @@ const scoreE1 = document.getElementById("score");
 console.log(scoreE1);
 
 let selectedTime = null;
-let time_;
+let time;
 let idSetInterval = null;
 
 function handlerSrartBtn(e) {
@@ -35,7 +35,7 @@ function handlerTimeController(e) {
     cards[1].classList.add("up");
     //   selectedTime = +e.target.dataset.time;
     selectedTime = parseInt(e.target.dataset.time);
-    time_ = selectedTime;
+    time = selectedTime;
     startGame();
   }
 }
@@ -45,7 +45,7 @@ startBtn.addEventListener("click", handlerSrartBtn);
 timeController.addEventListener("click", handlerTimeController);
 
 function startGame() {
-  setTime(time_);
+  setTime(time);
   idSetInterval = setInterval(decTime, 1000);
 }
 
@@ -56,11 +56,11 @@ function finishGame() {
 function decTime() {
   //   --time_;
   //   console.log(time_);
-  if (time_ === 0) {
+  if (time === 0) {
     finishGame();
   } else {
-    let current = --time_; // time_-1
-    if (time_ < 10) {
+    let current = --time; // time_-1
+    if (time < 10) {
       current = `0${current}`;
     }
     setTime(current);
@@ -68,7 +68,7 @@ function decTime() {
 }
 
 function setTime(timeGame) {
-  time.innerHTML = `00:${timeGame}`;
+  timeEl.innerHTML = `00:${timeGame}`;
 }
 
 // setTimeout(() => {
