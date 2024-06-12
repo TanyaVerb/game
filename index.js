@@ -1,11 +1,3 @@
-//startBtn
-//cards
-//timeController
-//modal
-//board
-//time
-//scoreE1
-
 const startBtn = document.getElementById("start");
 console.log(startBtn);
 const cards = document.querySelectorAll(".card");
@@ -22,22 +14,21 @@ const scoreE1 = document.getElementById("score");
 console.log(scoreE1);
 
 let selectedTime = null;
-let time;
+let time = null;
 let score = 0;
 //чтобы можно было очищать интервал
 let idSetInterval = null;
 
-function handlerSrartBtn(e) {
+function handlerStartBtn(e) {
+  //Предотвращает стандартное действие по умолчанию (переход по ссылке)
   e.preventDefault();
   cards[0].classList.add("up");
-
-  // const myEl = document.createElement("div");
-
-  // cards[0].insertAdjacentElement("beforeend", myEl);
 }
+
+startBtn.addEventListener("click", handlerStartBtn);
+
 function handlerTimeController(e) {
   if (e.target.classList.contains("time-list__item")) {
-    console.log(e.target);
     cards[1].classList.add("up");
     //   selectedTime = +e.target.dataset.time;
     selectedTime = parseInt(e.target.dataset.time);
@@ -46,13 +37,11 @@ function handlerTimeController(e) {
   }
 }
 
-startBtn.addEventListener("click", handlerSrartBtn);
-
 timeController.addEventListener("click", handlerTimeController);
 
 function handlerCircleClick(e) {
   if (e.target.classList.contains("circle")) {
-    score++;
+    score++; //score +1
     e.target.remove();
   }
   createRandomCircle();
@@ -63,13 +52,14 @@ board.addEventListener("click", handlerCircleClick);
 function createRandomCircle() {
   const circle = document.createElement("div");
   circle.classList.add("circle");
-  let size = getRandomInt(5, 50);
-  circle.style.width = circle.style.height = size + "px";
+  const size = getRandomInt(15, 50);
   //рандомный цвет
   let color = getRandomColor();
   circle.style.backgroundColor = color;
   //деструктуризация
   const { width, height } = board.getBoundingClientRect();
+  console.log(board.getBoundingClientRect());
+  circle.style.width = circle.style.height = size + "px";
   console.log(width, height);
   const x = getRandomInt(0, width - size);
   const y = getRandomInt(0, width - size);
@@ -84,14 +74,13 @@ function startGame() {
   idSetInterval = setInterval(decTime, 1000);
   //создать Circle
   createRandomCircle();
-  getRandomColor();
+  // getRandomColor();
 }
 
 function finishGame() {
-  console.log(score);
+  console.log(" Game over");
   scoreE1.innerHTML = score;
   modal.classList.add("open");
-  // console.log(" Game over");
   clearInterval(idSetInterval);
 }
 function decTime() {
@@ -101,7 +90,7 @@ function decTime() {
     finishGame();
   } else {
     let current = --time; // time_-1
-    if (time < 10) {
+    if (current < 10) {
       current = `0${current}`;
     }
     setTime(current);
@@ -125,16 +114,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); // Максимум не включается, минимум включается
 }
 
-// function getRandomColor() {
-//   let r = Math.floor(Math.random() * 256),
-//     g = Math.floor(Math.random() * 256),
-//     b = Math.floor(Math.random() * 256);
-//   return "#" + r.toString(16) + g.toString(16) + b.toString(16);
-// }
 function getRandomColor() {
-  // let r = Math.floor(Math.random() * 256),
-  //   g = Math.floor(Math.random() * 256),
-  //   b = Math.floor(Math.random() * 256);
   return `rgb(${getRandomInt(0, 256)},${getRandomInt(0, 256)},${getRandomInt(
     0,
     256
@@ -151,7 +131,7 @@ function resetGame() {
 }
 
 function handlerModalClick(e) {
-  // console.log(e.target.gettAtribute("id"));
+  // console.log(e.target.getAttribute("id"));
   if (e.target.getAttribute("id") === "restart") {
     console.log(this);
     resetGame.call(this);
